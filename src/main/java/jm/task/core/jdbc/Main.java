@@ -1,28 +1,27 @@
 package jm.task.core.jdbc;
 
 import jm.task.core.jdbc.dao.UserDao;
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
-import jm.task.core.jdbc.util.Util;
 
 public class Main {
 
     public static void main(String[] args) {
-        Util.getConnection();
         UserDao userDao = new UserDaoJDBCImpl();
+        UserDao userDaoH = new UserDaoHibernateImpl();
 
+        userDao.dropUsersTable();
         userDao.createUsersTable();
 
-        userDao.saveUser("Name1", "LastName1", (byte) 20);
+
+        userDaoH.saveUser("Name1", "LastName1", (byte) 20);
         System.out.println("User c именем - Name1 добавлен в базу данных");
-        userDao.saveUser("Name2", "LastName2", (byte) 25);
-        System.out.println("User c именем - Name2 добавлен в базу данных");
-        userDao.saveUser("Name3", "LastName3", (byte) 31);
-        System.out.println("User c именем - Name3 добавлен в базу данных");
-        userDao.saveUser("Name4", "LastName4", (byte) 38);
-        System.out.println("User c именем - Name4 добавлен в базу данных");
+        //userDaoH.saveUser("Name4", "LastName4", (byte) 38);
+        //System.out.println("User c именем - Name4 добавлен в базу данных");
 
         System.out.println(userDao.getAllUsers().toString());
-        userDao.cleanUsersTable();
+        userDaoH.removeUserById(1);
+        System.out.println(userDao.getAllUsers().toString());
         userDao.dropUsersTable();
     }
 }
